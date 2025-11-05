@@ -3,19 +3,18 @@ package Main;
 import com.google.inject.Inject;
 import dto.CourseInfo;
 import extensions.UiExtensions;
+import java.util.Map;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import pages.CatalogPage;
-import waiters.Waiter;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(UiExtensions.class)
-public class Scenario2 {
+public class scenario2 {
 
    @Inject
    private CatalogPage catalogPage;
@@ -27,11 +26,18 @@ public class Scenario2 {
    public void findEarliestAndLatestCoursesTest() {
 
        catalogPage.open();
-       catalogPage.loadAllCourses();
+       List <CourseInfo> allCourses = catalogPage.loadAllCourses();
+      allCourses.forEach(c ->
+          System.out.println(c.getName() + " — " + c.getDate())
+      );
 
-       String earliestCourseName = catalogPage.getEarliestCourse(catalogPage.getAllCourses());
-       String latestCourseName = catalogPage.getLatestCourse(catalogPage.getAllCourses());
+      Map<String, List<String>> earliestAndLatestCourses = catalogPage.getEarliestAndLatestCourseNames(allCourses);
+      System.out.println(earliestAndLatestCourses);
 
+      String earliestCourseName = earliestAndLatestCourses.get("earliest").get(0);
+      String latestCourseName = earliestAndLatestCourses.get("latest").get(0);
+      System.out.println( "earliest" + earliestCourseName);
+      System.out.println( "latest" + latestCourseName);
        catalogPage.clickCourseByName(earliestCourseName);
        String title1 = catalogPage.getCourseTitle();
        assertEquals(earliestCourseName, title1,

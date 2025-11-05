@@ -71,10 +71,4 @@ public abstract class AbsBasePage<T> extends AbsCommon {
       driver.get(baseUrl + getPathWithData(name, data));
       return (T) this;
    }
-
-   public T pageHeaderShouldBeSameAs(String header) {
-      assertThat(this.header.getText()).as("Error")
-          .isEqualTo(header);
-       return (T)this;
-   }
 }

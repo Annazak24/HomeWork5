@@ -18,72 +18,37 @@ import org.openqa.selenium.support.events.WebDriverListener;
 
 public class UiExtensions implements BeforeEachCallback, BeforeAllCallback, AfterEachCallback {
 
-   private WebDriver driver;
-   private final WebDriverFactory webDriverFactory = new WebDriverFactory();
+    private WebDriver driver;
+    private final WebDriverFactory webDriverFactory = new WebDriverFactory();
 
-   @Override
-   public void beforeAll(ExtensionContext context) {
-      webDriverFactory.init();
-   }
+    @Override
+    public void beforeAll(ExtensionContext context) {
+        webDriverFactory.init();
+    }
 
-   @Override
-   public void beforeEach(ExtensionContext context) {
-      WebDriver baseDriver = webDriverFactory.create();
+    @Override
+    public void beforeEach(ExtensionContext context) {
+        WebDriver baseDriver = webDriverFactory.create();
 
-      // 🧠 Ահա այստեղ ենք listener-ը կցում
-      driver = new EventFiringDecorator<>(new HighlightListener()).decorate(baseDriver);
+        driver = new EventFiringDecorator<>(new HighlightListener()).decorate(baseDriver);
 
-      Injector injector = Guice.createInjector(
-          new AbstractModule() {
-             @Override
-             protected void configure() {
-                bind(WebDriver.class).toInstance(driver);
-             }
-          },
-          new PagesModule(driver)
-      );
+        Injector injector = Guice.createInjector(
+                new AbstractModule() {
+                    @Override
+                    protected void configure() {
+                        bind(WebDriver.class).toInstance(driver);
+                    }
+                },
+                new PagesModule(driver)
+        );
 
-      injector.injectMembers(context.getTestInstance().get());
-   }
+        injector.injectMembers(context.getTestInstance().get());
+    }
 
-   @Override
-   public void afterEach(ExtensionContext context) {
-      if (driver != null) {
-         driver.quit();
-      }
-   }
+    @Override
+    public void afterEach(ExtensionContext context) {
+        if (driver != null) {
+            driver.quit();
+        }
+    }
 }
-
-//   private WebDriver driver;
-//   private final WebDriverFactory webDriverFactory = new WebDriverFactory();
-//
-//   @Override
-//   public void beforeAll(ExtensionContext context) {
-//      webDriverFactory.init();
-//   }
-//
-//   @Override
-//   public void beforeEach(ExtensionContext context) {
-//      WebDriver baseDriver = webDriverFactory.create();
-//
-//      driver = new EventFiringDecorator<>(new HighlightListener()).decorate(baseDriver);
-//
-//      Injector injector = Guice.createInjector(
-//          new AbstractModule() {
-//             @Override
-//             protected void configure() {
-//                bind(WebDriver.class).toInstance(driver);  // կարևոր binding
-//             }
-//          },
-//          new PagesModule(driver)
-//      );
-//
-//      injector.injectMembers(context.getTestInstance().get());
-//   }
-//
-//   @Override
-//   public void afterEach(ExtensionContext context) {
-//      if (driver != null) {
-//         driver.quit();
-//      }
-//   }
