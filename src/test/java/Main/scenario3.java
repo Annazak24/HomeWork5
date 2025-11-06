@@ -12,21 +12,22 @@ import pages.MainPage;
 @ExtendWith(UiExtensions.class)
 public class scenario3 {
 
-    @Inject
-    private CatalogPage catalogPage;
+   @Inject
+   private CatalogPage catalogPage;
 
-    @Inject
-    private MainPage mainPage;
+   @Inject
+   private MainPage mainPage;
 
-    @Test
-    public void findCourseByCategoryTest() throws InterruptedException {
-        mainPage.open();
-        mainPage.hoverTraining();
+   @Test
+   public void findCourseByCategoryTest() throws InterruptedException {
+      mainPage.open();
+      mainPage.hoverTraining();
 
-        String categoriesName = mainPage.clickRandomCategory().replaceAll("\\s*\\(\\d+\\)", "").trim();
-        String actualCategoriesName = catalogPage.getCategoryText();
+      String categoriesName = mainPage.clickRandomCategory().replaceAll("\\s*\\(\\d+\\)", "")
+          .trim();
+      String actualCategoriesName = catalogPage.getCategoryName();
 
-        assertEquals(categoriesName, actualCategoriesName,
-                String.format("Expected '%s', but found '%s'", categoriesName, actualCategoriesName));
-    }
+      assertEquals(categoriesName, actualCategoriesName,
+          String.format("Expected '%s', but found '%s'", categoriesName, actualCategoriesName));
+   }
 }

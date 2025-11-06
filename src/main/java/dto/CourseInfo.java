@@ -1,9 +1,10 @@
 package dto;
 
-import org.openqa.selenium.WebElement;
 import java.time.LocalDate;
+import org.openqa.selenium.WebElement;
 
 public class CourseInfo {
+
    private final String name;
    private final LocalDate date;
 
