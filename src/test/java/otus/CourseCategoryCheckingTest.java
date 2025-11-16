@@ -19,7 +19,7 @@ public class CourseCategoryCheckingTest {
    private MainPage mainPage;
 
    @Test
-   public void findCourseByCategoryTest() throws InterruptedException {
+   public void findCourseByCategoryTest() {
       mainPage.open();
       mainPage.hoverTraining();
 

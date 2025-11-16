@@ -30,8 +30,8 @@ public class LatestEarliestCourseCheckingTest {
       Map<String, List<String>> earliestAndLatestCourses = catalogPage.getEarliestAndLatestCourseNames(
           allCourses);
 
-      String earliestCourseName = earliestAndLatestCourses.get("earliest").get(0);
-      String latestCourseName = earliestAndLatestCourses.get("latest").get(0);
+      String earliestCourseName = earliestAndLatestCourses.get("earliest").getFirst();
+      String latestCourseName = earliestAndLatestCourses.get("latest").getFirst();
 
       catalogPage.clickCourseByName(earliestCourseName);
       String title1 = catalogPage.getCourseTitleByJsoup();

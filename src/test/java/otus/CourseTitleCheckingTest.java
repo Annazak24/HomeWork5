@@ -18,8 +18,8 @@ public class CourseTitleCheckingTest {
    public void findCourseByNameTest() {
       String courseName = "Разработка прикладного ПО на Qt и ОС «Аврора»";
 
-      catalogPage.open();
-      catalogPage.clickCourseByName(courseName);
+       catalogPage.open();
+       catalogPage.clickCourseByName(courseName);
 
       String title = catalogPage.getCourseTitleByJsoup();
 
