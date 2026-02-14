@@ -1,58 +1,98 @@
-# UI Automated Testing Project for OTUS
+# Homework 5 – Stub, API & UI Automation
 
-## Overview
-Automated UI tests for the OTUS learning platform (https://otus.ru) using Selenium WebDriver with Java. Implements Page Object Model with Google Guice DI.
+## 📌 Project Description
 
-## Technology Stack
-- Java 24
-- Selenium WebDriver 4.36.0
-- JUnit Jupiter 5.10.2
-- WebDriverManager 6.3.2
-- Google Guice 7.0.0
-- AssertJ 3.27.6
-- JSoup 1.17.2
-- Maven 3.14.0
+This project demonstrates a complete test automation setup including:
 
-## Project Structure
-```
-project/
-├── src/
-│   ├── main/java/
-│   │   ├── pages/         # Page Object classes
-│   │   ├── extensions/    # JUnit extensions
-│   │   ├── annotations/   # Custom annotations
-│   │   ├── dto/           # Data Transfer Objects
-│   │   └── waiters/       # Custom wait conditions
-│   └── test/java/
-│       └── otus/          # Test scenarios
-└── pom.xml
-```
+- WireMock Stub Server
+- REST API testing
+- JSON Schema validation
+- HTTP Helper
+- SOAP Helper
+- Cucumber BDD tests
+- Selenium UI test
+- Remote execution using Selenoid
+- Docker-based environment
 
-## Test Scenarios
-1. **scenario1** — Verify course search by exact name
-2. **scenario2** — Find earliest and latest courses
-3. **scenario3** — Navigate categories and validate selection
+---
+## 🔹 Stub Endpoints
 
-## Setup and Configuration
+The WireMock server provides the following endpoints:
 
-### Prerequisites
-- JDK 24
-- Maven 3.x
-- Chrome browser (default)
+- `GET /user/get/all`
+- `GET /cource/get/all`
+- `GET /user/get/{id}`
 
-### Configuration Properties
-In `pom.xml`:
-- `base.url` (default: https://otus.ru)
-- `browser.name` (default: chrome)
+All responses are validated with JSON Schema.
 
-## Running Tests
+---
+
+## 🔹 Implemented Tests
+
+### ✅ Stub Server Tests  
+Validates stub responses and status codes.
+
+### ✅ JSON Schema Tests  
+Ensures API responses match expected schema.
+
+### ✅ HTTP Helper Tests  
+Custom HTTP client logic validation.
+
+### ✅ SOAP Helper Tests  
+SOAP request/response validation.
+
+### ✅ Cucumber Tests  
+BDD scenarios executed via JUnit Platform.
+
+### ✅ UI Test  
+Frontend validation using Selenium.
+
+UI tests support:
+- Local execution
+- Remote execution via Selenoid
+
+---
+
+## 🛠 Tech Stack
+
+- Java 17
+- Maven
+- WireMock 3
+- Rest-Assured
+- Selenium 4
+- Cucumber 7
+- JUnit 5
+- Selenoid
+- Docker / Docker Compose
+
+---
+
+## 🚀 How to Run
+
+### 1️⃣ Start Selenoid
+
 ```bash
-# all tests
+docker-compose up -d
+
+2️⃣ Run All Tests
 mvn clean test
+This will execute:
+Stub tests
+Schema validation
+Helpers tests
+Cucumber tests
+UI tests (remote)
 
-# with profile
-mvn clean test -Pprod
+🔄 Execution Mode
+Default mode: Remote (Selenoid)
+To run locally:
+mvn clean test -Drun.type=local
 
-# specific test
-mvn clean test -Dtest=scenario1
-```
+🧩 Architecture Highlights
+
+Clean test separation
+Remote browser execution
+Docker-based reproducible environment
+Fully runnable with two commands
+
+
