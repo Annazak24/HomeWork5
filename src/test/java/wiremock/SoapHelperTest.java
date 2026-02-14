@@ -1,9 +1,18 @@
 package wiremock;
 
-import helpers.SoapHelper;
 import org.junit.jupiter.api.Test;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.MediaType;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class SoapHelperTest {
+
+    private final RestTemplate restTemplate = new RestTemplate();
 
     @Test
     void testSoap() {
@@ -21,13 +30,19 @@ public class SoapHelperTest {
             </soap:Envelope>
             """;
 
-        SoapHelper helper = new SoapHelper();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.TEXT_XML);
 
-        helper.sendSoapRequest(
-                        "https://www.dataaccess.com/webservicesserver/NumberConversion.wso",
-                        body)
-                .then()
-                .statusCode(200);
+        HttpEntity<String> request = new HttpEntity<>(body, headers);
+
+        ResponseEntity<String> response = restTemplate.postForEntity(
+                "https://www.dataaccess.com/webservicesserver/NumberConversion.wso",
+                request,
+                String.class
+        );
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertTrue(response.getBody().contains("one hundred"));
     }
-
 }

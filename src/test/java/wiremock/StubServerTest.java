@@ -1,24 +1,34 @@
 package wiremock;
 
-import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.RegisterExtension;
+import com.github.tomakehurst.wiremock.WireMockServer;
+import org.junit.jupiter.api.*;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.http.ResponseEntity;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
-import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
+import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class StubServerTest {
 
-    @RegisterExtension
-    static WireMockExtension wiremock = WireMockExtension.newInstance()
-            .options(wireMockConfig().dynamicPort().dynamicHttpsPort())
-            .build();
+    private static WireMockServer server;
+    private final RestTemplate restTemplate = new RestTemplate();
+
+    @BeforeAll
+    static void startServer() {
+        server = new WireMockServer(options().dynamicPort());
+        server.start();
+    }
+
+    @AfterAll
+    static void stopServer() {
+        server.stop();
+    }
 
     @Test
-    public void setupStubs() {
+    void testUserListStub() {
 
-        // user/get/all
-        wiremock.stubFor(get(urlEqualTo("/user/get/all"))
+        server.stubFor(get(urlEqualTo("/user/get/all"))
                 .willReturn(okJson("""
                         [
                           {
@@ -30,28 +40,54 @@ public class StubServerTest {
                         ]
                         """)));
 
-        // cource/get/all
-        wiremock.stubFor(get(urlEqualTo("/cource/get/all"))
+        ResponseEntity<String> response = restTemplate.getForEntity(
+                "http://localhost:" + server.port() + "/user/get/all",
+                String.class
+        );
+
+        assertEquals(200, response.getStatusCode().value());
+        assertTrue(response.getBody().contains("Test user"));
+    }
+
+    @Test
+    void testCourseListStub() {
+
+        server.stubFor(get(urlEqualTo("/cource/get/all"))
                 .willReturn(okJson("""
                         [
                           {
                             "name": "QA java",
                             "price": 15000
-                          },
-                          {
-                            "name": "Java",
-                            "price": 12000
                           }
                         ]
                         """)));
 
-        // user/get/{id}
-        wiremock.stubFor(get(urlMatching("/user/get/\\d+"))
+        ResponseEntity<String> response = restTemplate.getForEntity(
+                "http://localhost:" + server.port() + "/cource/get/all",
+                String.class
+        );
+
+        assertEquals(200, response.getStatusCode().value());
+        assertTrue(response.getBody().contains("QA java"));
+    }
+
+    @Test
+    void testUserScoreStub() {
+
+        server.stubFor(get(urlMatching("/user/get/\\d+"))
                 .willReturn(okJson("""
                         {
                           "name": "Test user",
                           "score": 78
                         }
                         """)));
+
+        ResponseEntity<String> response = restTemplate.getForEntity(
+                "http://localhost:" + server.port() + "/user/get/1",
+                String.class
+        );
+
+        assertEquals(200, response.getStatusCode().value());
+        assertTrue(response.getBody().contains("score"));
     }
 }
