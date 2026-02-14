@@ -117,12 +117,6 @@
         <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-junit-platform-engine</artifactId>
-            <version>${cucumber-junit.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.cucumber</groupId>
-            <artifactId>cucumber-junit-platform-engine</artifactId>
             <version>${cucumber.version}</version>
             <scope>test</scope>
         </dependency>
@@ -131,6 +125,13 @@
             <artifactId>junit-platform-suite</artifactId>
             <version>1.10.2</version>
         </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>2.0.17</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
     <profiles>
@@ -158,13 +159,13 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${maven.surefire.version}</version>
                 <configuration>
-                    <testFailureIgnore>true</testFailureIgnore>
                     <systemPropertyVariables>
-                        <base.url>${base.url}</base.url>
                         <browser.name>${browser.name}</browser.name>
+                        <run.type>remote</run.type>
                     </systemPropertyVariables>
                 </configuration>
             </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
