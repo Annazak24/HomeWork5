@@ -1,18 +1,18 @@
-# Homework 5 – Stub, API & UI Automation
+# Homework 5 – Stub & API Testing (Spring + WireMock + Selenoid)
 
 ## 📌 Project Description
+This project implements Stub server and API testing according to Homework #5 requirements.
 
 This project demonstrates a complete test automation setup including:
 
-- WireMock Stub Server
-- REST API testing
-- JSON Schema validation
-- HTTP Helper
-- SOAP Helper
-- Cucumber BDD tests
-- Selenium UI test
-- Remote execution using Selenoid
-- Docker-based environment
+-WireMock Stub Server
+-API Helpers (HTTP + SOAP)
+-Tests written using Spring (RestTemplate)
+-JSON schema validation
+-Cucumber tests
+-UI test with Selenium
+-Selenoid integration (Docker)
+-Docker-based environment
 
 ---
 ## 🔹 Stub Endpoints
